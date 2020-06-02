@@ -27,6 +27,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+//set the public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Add headers
 app.use(function (req, res, next) {
 
@@ -49,25 +52,10 @@ app.use(function (req, res, next) {
 
 var port = 3000;
 
-// Extended: https://swagger.io/specification/#infoObject
-const swaggerOptions = {
-    swaggerDefinition: {
-        info: {
-            version: "1.0.0",
-            title: "Project API",
-            description: "Project API Information",
-            contact: {
-                name: "Jay Pal"
-            },
-            servers: ["http://localhost:" + port]
-        }
-    },
-    //['.routes/*.js']['app.js']
-    apis: ['./routers/*.js']
-};
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
+const swaggerConfig = require('./config/swagger');
+const swaggerDocs = swaggerJsDoc(swaggerConfig.options(port));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, { explorer: true }));
+
 
 //Set routes
 var teams = require('./routers/teams');
