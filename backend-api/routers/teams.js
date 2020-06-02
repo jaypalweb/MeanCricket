@@ -7,12 +7,12 @@ var Team = require('../models/team');
  * @swagger
  * /teams:
  *  get:
- *      description: Use to request all teams
- *      tags:
- *          - Teams
- *      responsed:
- *          '200':
- *              description: A successful response
+ *    tags:
+ *      - Teams  
+ *    description: Use to request all teams
+ *    responses:
+ *      '200':
+ *        description: A successful response
  */
 
 router.get('/', function (req, res) {
