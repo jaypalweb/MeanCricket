@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var TeamSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: [true, 'Please enter Team name']
     },
     image: {
         type: String

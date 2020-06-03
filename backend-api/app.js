@@ -1,4 +1,5 @@
 var express = require('express');
+var fileUpload = require('express-fileupload');
 var path = require('path');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
@@ -16,6 +17,9 @@ db.once('open', function () {
 
 //Init app
 var app = express();
+
+//express file upload middleware
+app.use(fileUpload());
 
 //Pretify JSON middleware
 app.set('json spaces', 4);

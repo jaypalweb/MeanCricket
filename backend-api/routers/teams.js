@@ -36,13 +36,13 @@ router.get('/', function (req, res) {
  *      - multipart/form-data
  *    parameters:
  *      - in: formData
- *        name: image
- *        type: file
- *        description: the file to upload 
- *      - in: formData
  *        name: name
  *        type: string
  *        description: name of the team
+ *      - in: formData
+ *        name: image
+ *        type: file
+ *        description: the file to upload 
  *      - in: formData
  *        name: country
  *        type: string
@@ -67,7 +67,7 @@ router.post('/', function (req, res) {
     });
     team.save(function (err) {
         if (err) {
-            res.status(HttpStatus.UNPROCESSABLE_ENTITY).json(err);
+            res.status(HttpStatus.UNPROCESSABLE_ENTITY).json(err.message);
         }
         res.status(HttpStatus.CREATED).json("success");
     });
