@@ -148,5 +148,20 @@ router.put('/:id', function (req, res) {
     });
 });
 
+router.delete('/:id', function (req, res) {
+    var id = req.params.id;
+    Team.findByIdAndRemove(id, function (err, t) {
+        if (err)
+            console.log(err);
+        fs.remove('public/images/teams/' + t.image, function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+        res.status(HttpStatus.OK).json({ "status": "success" });
+    });
+
+
+});
 //Exports
 module.exports = router;
