@@ -63,7 +63,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, { explorer: t
 
 //Set routes
 var teams = require('./routers/teams');
+var players = require('./routers/players');
+
 app.use('/teams', teams);
+app.use('/players', players);
 
 // Start the server
 app.listen(port, function () {
