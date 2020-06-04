@@ -127,8 +127,8 @@ router.post('/', function (req, res) {
  *        description: short description of the team
  * 
  *    responses:
- *      '201':
- *        description: Created
+ *      '200':
+ *        description: Updated
  */
 router.put('/:id', function (req, res) {
 
@@ -197,8 +197,8 @@ router.put('/:id', function (req, res) {
  *        description: id of the team
  * 
  *    responses:
- *      '201':
- *        description: Created
+ *      '200':
+ *        description: Deleted
  */
 router.delete('/:id', function (req, res) {
     var id = req.params.id;
