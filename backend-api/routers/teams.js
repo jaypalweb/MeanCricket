@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var fs = require('fs-extra');
 var router = express.Router();
 var HttpStatus = require('http-status-codes');
 
@@ -76,7 +77,9 @@ router.post('/', function (req, res) {
         var pathname = 'public/images/teams/' + imageFile;
 
         productImage.mv(pathname, function (err) {
-            return console.log(err);
+            if (err) {
+                console.log(err);
+            }
         });
     }
     var team = new Team({
@@ -87,9 +90,61 @@ router.post('/', function (req, res) {
     });
     team.save(function (err) {
         if (err) {
-            res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({ "error": err.message });
+            res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({ "error": err });
         }
         res.status(HttpStatus.CREATED).json({ "status": "success" });
+    });
+});
+
+router.put('/:id', function (req, res) {
+
+    var imageFile = "";
+
+    if (req.files != null && typeof req.files.image !== "undefined") {
+        imageFile = req.files.image.name;
+        var extension = (path.extname(imageFile)).toLowerCase();
+        var imgAllowedExt = [".jpg", ".jpeg", ".png"];
+        if (!imgAllowedExt.includes(extension)) {
+            res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({ "error": "Please Upload image file only" });
+        }
+    }
+    if (imageFile != "") {
+        var productImage = req.files.image;
+        var pathname = 'public/images/teams/' + imageFile;
+
+        productImage.mv(pathname, function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+    }
+
+    Team.findById(req.params.id, function (err, t) {
+        if (err) {
+            res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({ "error": err });
+        }
+
+        t.name = req.body.name;
+        t.country = req.body.country;
+        t.desc = req.body.desc;
+
+        if (imageFile != "") {
+            var oldImage = t.image;
+            fs.remove('public/images/teams/' + oldImage, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+            t.image = imageFile;
+        }
+
+        t.save(function (err) {
+            if (err) {
+                res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({ "error": err });
+            }
+            res.status(HttpStatus.CREATED).json({ "status": "success" });
+        });
+
     });
 });
 
