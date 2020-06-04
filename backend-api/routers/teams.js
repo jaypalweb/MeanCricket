@@ -88,14 +88,48 @@ router.post('/', function (req, res) {
         country: req.body.country,
         desc: req.body.desc
     });
-    team.save(function (err) {
+    team.save(function (err, t) {
         if (err) {
             res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({ "error": err });
         }
-        res.status(HttpStatus.CREATED).json({ "status": "success" });
+        res.status(HttpStatus.CREATED).json(t);
     });
 });
 
+/**
+ * @swagger
+ * /teams/{teamId}:
+ *  put:
+ *    tags:
+ *      - Teams
+ *    consumes:
+ *      - multipart/form-data
+ *    parameters:
+ *      - in: path
+ *        name: teamId
+ *        type: string
+ *        description: id of the team
+ *      - in: formData
+ *        name: name
+ *        type: string
+ *        description: name of the team
+ *      - in: formData
+ *        name: image
+ *        type: file
+ *        description: the file to upload 
+ *      - in: formData
+ *        name: country
+ *        type: string
+ *        description: country of the team
+ *      - in: formData
+ *        name: desc
+ *        type: string
+ *        description: short description of the team
+ * 
+ *    responses:
+ *      '201':
+ *        description: Created
+ */
 router.put('/:id', function (req, res) {
 
     var imageFile = "";
@@ -142,12 +176,30 @@ router.put('/:id', function (req, res) {
             if (err) {
                 res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({ "error": err });
             }
-            res.status(HttpStatus.CREATED).json({ "status": "success" });
+            res.status(HttpStatus.OK).json(t);
         });
 
     });
 });
 
+/**
+ * @swagger
+ * /teams/{teamId}:
+ *  delete:
+ *    tags:
+ *      - Teams
+ *    consumes:
+ *      - multipart/form-data
+ *    parameters:
+ *      - in: path
+ *        name: teamId
+ *        type: string
+ *        description: id of the team
+ * 
+ *    responses:
+ *      '201':
+ *        description: Created
+ */
 router.delete('/:id', function (req, res) {
     var id = req.params.id;
     Team.findByIdAndRemove(id, function (err, t) {
