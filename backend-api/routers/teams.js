@@ -1,7 +1,7 @@
 var express = require('express');
+var path = require('path');
 var router = express.Router();
 var HttpStatus = require('http-status-codes');
-var fs = require('fs-extra');
 
 var Team = require('../models/team');
 
@@ -60,8 +60,28 @@ router.get('/', function (req, res) {
 //
 router.post('/', function (req, res) {
 
+    var imageFile = "";
+
+    //var imageFile = typeof req.files.image !== "undefined" ? req.files.image.name : "";
+    if (req.files != null && typeof req.files.image !== "undefined") {
+        imageFile = req.files.image.name;
+        var extension = (path.extname(imageFile)).toLowerCase();
+        var imgAllowedExt = [".jpg", ".jpeg", ".png"];
+        if (!imgAllowedExt.includes(extension)) {
+            res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({ "error": "Please Upload image file only" });
+        }
+    }
+    if (imageFile != "") {
+        var productImage = req.files.image;
+        var pathname = 'public/images/teams/' + imageFile;
+
+        productImage.mv(pathname, function (err) {
+            return console.log(err);
+        });
+    }
     var team = new Team({
         name: req.body.name,
+        image: imageFile,
         country: req.body.country,
         desc: req.body.desc
     });

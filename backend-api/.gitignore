@@ -1,5 +1,13 @@
 # dependencies
 /node_modules
+/public/images/teams/*
+/public/images/players/*
+
+# exception to the rule
+!/public/images/teams/.gitkeep
+
+# exception to the rule
+!/public/images/players/.gitkeep 
 
 # Some files
 package-lock.json
