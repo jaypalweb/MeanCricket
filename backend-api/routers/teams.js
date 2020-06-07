@@ -29,6 +29,33 @@ router.get('/', function (req, res) {
 
 /**
  * @swagger
+ * /teams/{teamId}:
+ *  get:
+ *    tags:
+ *      - Teams
+ *    parameters:
+ *      - in: path
+ *        name: teamId
+ *        type: string
+ *        description: id of the team
+ *    description: Get team details by id
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ */
+
+router.get('/:id', function (req, res) {
+    var id = req.params.id;
+    Team.findById(id, function (err, team) {
+        if (err) {
+            res.status(HttpStatus.SERVICE_UNAVAILABLE).json(err);
+        }
+        res.status(HttpStatus.OK).json(team);
+    })
+});
+
+/**
+ * @swagger
  * /teams:
  *  post:
  *    tags:
@@ -188,8 +215,6 @@ router.put('/:id', function (req, res) {
  *  delete:
  *    tags:
  *      - Teams
- *    consumes:
- *      - multipart/form-data
  *    parameters:
  *      - in: path
  *        name: teamId
