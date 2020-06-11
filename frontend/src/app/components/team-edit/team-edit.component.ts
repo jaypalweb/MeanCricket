@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TeamService } from 'src/app/services/team.service';
 
 @Component({
   selector: 'app-team-edit',
@@ -8,10 +9,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class TeamEditComponent implements OnInit {
   id: string;
-  path: any;
+  team = {
+    name: '',
+    country: '',
+    desc: ''
+  }
+
   constructor(
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private teamService: TeamService
   ) { }
 
   ngOnInit(): void {
@@ -19,8 +26,23 @@ export class TeamEditComponent implements OnInit {
     if (actionType == 'edit') {
       this.id = this.activatedRoute.snapshot.paramMap.get('id');
     }
-    console.log(actionType);
-    console.log(this.id);
+    //console.log(actionType);
+    //console.log(this.id);
+  }
+
+  onSave(form) {
+    const data = form.value;
+    if (this.id) {
+      this.teamService.updateTeam(this.id, data).subscribe(team => {
+        console.log(team);
+        this.router.navigateByUrl('/teams');
+      });
+    } else {
+      this.teamService.createTeam(data).subscribe(team => {
+        console.log(team);
+        this.router.navigateByUrl('/teams');
+      });
+    }
   }
 
 }

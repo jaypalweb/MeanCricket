@@ -1,7 +1,11 @@
-<form enctype="multipart/form-data">
+<form #form="ngForm" (submit)="onSave(form)" enctype="multipart/form-data">
     <div class="form-group">
         <label for="TeamName">Name</label>
-        <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter Name">
+        <input type="text" class="form-control" name="name" id="name" [(ngModel)]="team.name" required #name="ngModel"
+            aria-describedby="nameHelp" placeholder="Enter Name">
+        <div class="alert alert-danger" *ngIf="name.invalid && (name.touched || name.dirty)">
+            Please enter Team Name
+        </div>
     </div>
     <div class="form-group">
         <label for="image">Image</label>
@@ -9,11 +13,13 @@
     </div>
     <div class="form-group">
         <label for="country">Country</label>
-        <input type="text" class="form-control" id="country" placeholder="Enter Country">
+        <input type="text" class="form-control" name="country" id="country" placeholder="Enter Country"
+            [(ngModel)]="team.country" #country="ngModel">
     </div>
     <div class="form-group">
         <label for="desc">Description</label>
-        <textarea class="form-control" id="desc" rows="3" placeholder="Enter Team Description"></textarea>
+        <textarea class="form-control" id="desc" rows="3" placeholder="Enter Team Description" name="desc"
+            [(ngModel)]="team.desc" #desc="ngModel"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Submit</button>
 </form>
