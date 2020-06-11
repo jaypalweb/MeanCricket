@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { TeamsComponent } from './components/teams/teams.component';
 import { HttpClientModule } from '@angular/common/http';
+import { TeamEditComponent } from './components/team-edit/team-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    TeamsComponent
+    TeamsComponent,
+    TeamEditComponent
   ],
   imports: [
     BrowserModule,
