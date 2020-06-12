@@ -33,8 +33,13 @@ export class TeamService {
     return this.http.post<Team>(`${baseUrl}/teams`, formData);
   }
 
-  updateTeam(id: string, team: Team): Observable<Team> {
-    return this.http.put<Team>(`${baseUrl}/teams/${id}`, team)
+  updateTeam(id: string, team: Team, image: File = null): Observable<Team> {
+    const formData: FormData = new FormData();
+    formData.append('image', image, image.name);
+    for (let key in team) {
+      formData.append(key, team[key]);
+    }
+    return this.http.put<Team>(`${baseUrl}/teams/${id}`, formData)
       .pipe(tap(data => console.log('Team:', data)));
   }
 

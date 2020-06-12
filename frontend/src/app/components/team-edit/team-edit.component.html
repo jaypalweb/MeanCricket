@@ -7,8 +7,13 @@
             Please enter Team Name
         </div>
     </div>
+    <div class="form-group" *ngIf="id && team.image">
+        <label for="image">Current Image</label>
+        <img src="{{teamImagepath + team.image}}" title="{{team.name}}" alt="product image">
+    </div>
     <div class="form-group">
-        <label for="image">Image</label>
+        <label for="image" *ngIf="!id">Image</label>
+        <label for="image" *ngIf="id">Change Image</label>
         <input type="file" class="form-control-file" id="image" (change)="handleFileInput($event.target.files)">
     </div>
     <div class="form-group">

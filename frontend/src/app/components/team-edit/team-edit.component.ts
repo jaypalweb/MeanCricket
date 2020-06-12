@@ -1,20 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TeamService } from 'src/app/services/team.service';
+import { environment } from 'src/environments/environment';
+import { Team } from '../teams/team';
+
+const baseUrl = environment.baseUrl;
 
 @Component({
   selector: 'app-team-edit',
   templateUrl: './team-edit.component.html',
   styleUrls: ['./team-edit.component.scss']
 })
+
 export class TeamEditComponent implements OnInit {
   id: string;
-  team = {
+  team: Team = {
     name: '',
+    image: '',
     country: '',
     desc: ''
   }
   fileToUpload: File = null;
+  teamImagepath = baseUrl + '/images/teams/';
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -26,8 +33,14 @@ export class TeamEditComponent implements OnInit {
     if (actionType == 'edit') {
       this.id = this.activatedRoute.snapshot.paramMap.get('id');
     }
+    if (this.id) {
+      this.teamService.getTeam(this.id).subscribe(data => {
+        //console.log(data);
+        this.team = data;
+      });
+    }
     //console.log(actionType);
-    //console.log(this.id);
+    console.log(this.id);
   }
 
   onSave(form) {
@@ -37,7 +50,7 @@ export class TeamEditComponent implements OnInit {
 
     const data = form.value;
     if (this.id) {
-      this.teamService.updateTeam(this.id, data).subscribe(team => {
+      this.teamService.updateTeam(this.id, data, this.fileToUpload).subscribe(team => {
         console.log(team);
         this.router.navigateByUrl('/teams');
       });
