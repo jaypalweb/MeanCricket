@@ -20,4 +20,15 @@ export class TeamsComponent implements OnInit {
   getData() {
     this.teams = this.teamService.getData();
   }
+
+  onDelete(id: string) {
+    if (confirm('Confirm deletion')) {
+      console.log(id);
+      this.teamService.deleteTeam(id).subscribe(data => {
+        this.getData();
+        console.log('Quote Deleted');
+      });
+    }
+  }
+
 }
