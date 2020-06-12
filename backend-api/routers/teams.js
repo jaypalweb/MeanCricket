@@ -230,11 +230,14 @@ router.delete('/:id', function (req, res) {
     Team.findByIdAndRemove(id, function (err, t) {
         if (err)
             console.log(err);
-        fs.remove('public/images/teams/' + t.image, function (err) {
-            if (err) {
-                console.log(err);
-            }
-        });
+        if (t.image) {
+            fs.remove('public/images/teams/' + t.image, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        }
+
         res.status(HttpStatus.OK).json({ "status": "success" });
     });
 
