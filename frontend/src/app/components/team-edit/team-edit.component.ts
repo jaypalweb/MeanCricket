@@ -14,7 +14,7 @@ export class TeamEditComponent implements OnInit {
     country: '',
     desc: ''
   }
-
+  fileToUpload: File = null;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -31,6 +31,10 @@ export class TeamEditComponent implements OnInit {
   }
 
   onSave(form) {
+    //ref - https://stackoverflow.com/questions/47936183/angular-file-upload (this is implemented here)
+    //ref -https://www.techiediaries.com/angular-formdata/
+    //ref - https://www.freakyjolly.com/angular-input-file-image-file-upload-to-base64-tutorial-by-example/
+
     const data = form.value;
     if (this.id) {
       this.teamService.updateTeam(this.id, data).subscribe(team => {
@@ -38,11 +42,17 @@ export class TeamEditComponent implements OnInit {
         this.router.navigateByUrl('/teams');
       });
     } else {
-      this.teamService.createTeam(data).subscribe(team => {
+      this.teamService.createTeam(data, this.fileToUpload).subscribe(team => {
         console.log(team);
         this.router.navigateByUrl('/teams');
       });
     }
+
+
+  }
+
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
   }
 
 }

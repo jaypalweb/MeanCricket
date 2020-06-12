@@ -24,8 +24,13 @@ export class TeamService {
       .pipe(tap(data => console.log('Team:', data)));
   }
 
-  createTeam(team: Team): Observable<Team> {
-    return this.http.post<Team>(`${baseUrl}/teams`, team);
+  createTeam(team: Team, image: File = null): Observable<Team> {
+    const formData: FormData = new FormData();
+    formData.append('image', image, image.name);
+    for (let key in team) {
+      formData.append(key, team[key]);
+    }
+    return this.http.post<Team>(`${baseUrl}/teams`, formData);
   }
 
   updateTeam(id: string, team: Team): Observable<Team> {
